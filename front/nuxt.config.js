@@ -1,15 +1,28 @@
+const environment = process.env.NODE_ENV || 'development'
+const envSet = require(`./env.${environment}.js`)
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
+  mode: 'spa',
+
+  env: {
+    ...envSet,
+    NODE_ENV: process.env.NODE_ENV
+  },
+  server: {
+    port: 8000,
+    host: '0.0.0.0',
+  },
 
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'front-sample',
+    title: 'tmp-share',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'ja'
     },
     meta: [
       { charset: 'utf-8' },
@@ -32,18 +45,22 @@ export default {
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-  ],
-
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/dotenv',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    // https://go.nuxtjs.dev/pwa
+    '@nuxtjs/proxy',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    proxy: true
+  },
+  proxy: {
+    '/api': envSet.apiBaseUrl
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

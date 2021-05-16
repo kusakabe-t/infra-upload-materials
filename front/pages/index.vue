@@ -1,34 +1,51 @@
 <template>
   <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">
-        front-sample
-      </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+    <div v-for='task in tasks' :key=task.id>
+      <div>{{task.name}}</div>
+      <div @click='createTask'>詳細確認ボタン</div>
+      <div @click='updateTask(task.id)'>更新ボタン</div>
+      <div @click='deleteTask(task.id)'>削除ボタン</div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      tasks: null,
+      id: null,
+      name: null,
+      is_done: null,
+      time: null
+    }
+  },
+  async fetch() {
+    const { data } = await this.$axios.get('/api/tasks')
+    this.tasks = data
+  },
+  methods: {
+    async createTask() {
+      await this.$axios.post('/api/task', {
+        name: 'hoge',
+        is_done: true,
+        time: new Date()
+      })
+    },
+    async updateTask() {
+      await this.$axios.patch('/api/task', {
+        name: 'hoge',
+        is_done: false,
+        time: new Date()
+      })
+    },
+    async deleteTask() {
+      await this.$axios.delete('/api/task', {
+        id: this.id
+      })
+    }
+  }
+}
 </script>
 
 <style>
@@ -39,6 +56,7 @@ export default {}
   justify-content: center;
   align-items: center;
   text-align: center;
+  flex-direction: column;
 }
 
 .title {
