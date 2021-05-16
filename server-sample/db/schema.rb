@@ -12,10 +12,8 @@
 
 ActiveRecord::Schema.define(version: 2021_05_16_113207) do
 
-  create_table "tasks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
-    t.string "is_done"
-    t.integer "time"
+  create_table "post_times", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "time", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
