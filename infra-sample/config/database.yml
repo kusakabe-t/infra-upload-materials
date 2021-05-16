@@ -14,12 +14,16 @@ default: &default
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  password:
-  host: localhost
+  password: root
+  socket: /tmp/mysql.sock
 
 development:
   <<: *default
+  username: root
+  password:
   database: infra_sample_development
+  host: mysql
+
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -51,5 +55,5 @@ test:
 production:
   <<: *default
   database: infra_sample_production
-  username: infra_sample
+  username: <%= ENV['INFRA_SAMPLE_DATABASE_USER'] %>
   password: <%= ENV['INFRA_SAMPLE_DATABASE_PASSWORD'] %>
