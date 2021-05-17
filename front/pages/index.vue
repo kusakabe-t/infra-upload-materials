@@ -1,10 +1,13 @@
 <template>
   <div class="container">
-    <div v-for='task in tasks' :key=task.id>
-      <div>{{task.name}}</div>
-      <div @click='createTask'>詳細確認ボタン</div>
-      <div @click='updateTask(task.id)'>更新ボタン</div>
-      <div @click='deleteTask(task.id)'>削除ボタン</div>
+    <div v-for='post in posts' :key=post.id>
+      <div>{{post.updated_at}}</div>
+      <nuxt-link :to="`/times/${post.id}`">詳細確認ボタン</nuxt-link>
+      <div @click='updateTime(post.id)'>更新ボタン</div>
+      <div @click='deleteTime(post.id)'>削除ボタン</div>
+    </div>
+    <div @click='createTime' style='margin-top: 100px;'>
+      新しく作成する
     </div>
   </div>
 </template>
@@ -13,34 +16,27 @@
 export default {
   data() {
     return {
-      tasks: null,
-      id: null,
-      name: null,
-      is_done: null,
+      posts: null,
       time: null
     }
   },
   async fetch() {
-    const { data } = await this.$axios.get('/api/tasks')
-    this.tasks = data
+    const { data } = await this.$axios.get('/api/post_times')
+    this.posts = data
   },
   methods: {
-    async createTask() {
-      await this.$axios.post('/api/task', {
-        name: 'hoge',
-        is_done: true,
+    async createTime() {
+      await this.$axios.post('/api/post_times', {
         time: new Date()
       })
     },
-    async updateTask() {
-      await this.$axios.patch('/api/task', {
-        name: 'hoge',
-        is_done: false,
+    async updateTime(id) {
+      await this.$axios.patch(`/api/post_times/${id}`, {
         time: new Date()
       })
     },
-    async deleteTask() {
-      await this.$axios.delete('/api/task', {
+    async deleteTime(id) {
+      await this.$axios.delete(`/api/post_times/${id}`, {
         id: this.id
       })
     }
